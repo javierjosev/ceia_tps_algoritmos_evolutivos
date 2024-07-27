@@ -1,3 +1,12 @@
+"""
+Crear en Python un vector columna A de 20 individuos binarios aleatorios de tipo
+string. Crear un segundo vector columna B de 20 números aleatorios comprendidos
+en el intervalo (0, 1). Mutar un alelo aleatorio a aquellos genes pertenecientes a los
+cromosomas de A que tengan en su i-ésima fila un correspondiente de B inferior a
+0.09. Almacenar los cromosomas mutados en un vector columna C y mostrarlos por
+consola.
+"""
+
 import random
 import numpy as np
 
