@@ -88,7 +88,6 @@ def plot_vector(vector):
     plt.show()
 
 
-
 # Parámetros del algoritmo
 num_individuals = 50
 # Cálculo de rangos
@@ -108,13 +107,10 @@ y_min, y_max = 0, 20
 
 expression = "7.7 + 0.15 * x + 0.22 * y - 0.05 * x ** 2 - 0.016 * y ** 2 - 0.007 * x * y"
 
-# Inicialización de la población
-population = [''.join(random.choices(['0', '1'], k=total_bits)) for _ in range(num_individuals)]
-
 genetic_algorithm = GeneticAlgorithm(expression, num_individuals, bits_x, bits_y, num_generations, prob_crossover,
                                      prob_mutation,
                                      x_min, x_max, y_min, y_max)
-best_chromosome, best_x, best_y, best_fitness, best_fitness_per_gen = genetic_algorithm.run(population)
+best_chromosome, best_x, best_y, best_fitness, best_fitness_per_gen = genetic_algorithm.run()
 
 print(f'Mejor individuo: {best_chromosome}')
 print(f'Valor de x: {best_x}')

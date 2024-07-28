@@ -19,6 +19,9 @@ class GeneticAlgorithm:
 
         self.best_fitness_value_per_gen = []
 
+        # Inicialización de la población
+        self.population = [''.join(random.choices(['0', '1'], k=bits_x)) for _ in range(num_individuals)]
+
     def _fitness_function(self, **kwargs):
         # Evalúa la expresión, permitiendo variables locales
         return eval(self.expression, {"__builtins__": None}, kwargs)
@@ -68,7 +71,8 @@ class GeneticAlgorithm:
                 chromosome[i] = '1' if chromosome[i] == '0' else '0'
         return ''.join(chromosome)
 
-    def run(self, population):
+    def run(self):
+        population = self.population
         # Algoritmo genético
         for generation in range(self.num_generations):
             fitness = self._evaluate_population(population)
