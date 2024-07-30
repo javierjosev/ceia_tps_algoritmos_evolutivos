@@ -7,11 +7,6 @@ y = x 2 . Los parámetros del algoritmos son:
 ✓ Probabilidad de mutación 0.01
 """
 
-import random
-import numpy as np
-import matplotlib.pyplot as plt
-import sympy as sp
-
 from genetic_algorithm import GeneticAlgorithm
 
 # Parámetros del algoritmo

@@ -21,6 +21,11 @@ def print_population(population):
         print(f"Cromosoma {i + 1}: {chromosome}")
 
 
+def print_proba(population):
+    for i, chromosome in enumerate(population):
+        print(f"Probabilidad {i + 1}: {chromosome}")
+
+
 def generate_chromosome(length=10):
     return ''.join(random.choice('01') for _ in range(length))
 
@@ -48,7 +53,7 @@ print('\n Población A:')
 print_population(A)
 
 print('\n Conjunto B:')
-print_population(B)
+print_proba(B)
 
 print('\n Población C:')
 print_population(C)

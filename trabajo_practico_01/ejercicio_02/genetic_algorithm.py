@@ -46,8 +46,9 @@ class GeneticAlgorithm:
         probabilities = fitness / total_fitness
         selected_population = []
         for _ in range(len(population)):
-            selected_index = np.random.choice(len(population), p=probabilities)  # "probabilities" es un array de
-            # probabilidades asociadas a cada índice. Define la probabilidad de seleccionar cada índice en la secuencia
+            selected_index = np.random.choice(len(population), p=probabilities)
+            # "probabilities" es un array de probabilidades asociadas a cada índice.
+            # Define la probabilidad de seleccionar cada índice en la secuencia
             # para la función np.random.choice(..).
             selected_population.append(population[selected_index])
         return selected_population
