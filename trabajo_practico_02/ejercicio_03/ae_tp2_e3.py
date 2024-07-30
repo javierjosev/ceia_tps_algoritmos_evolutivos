@@ -40,7 +40,7 @@ def plot_function(expression_str, x_min_bound, x_max_bound, y_min_bound, y_max_b
     ax.set_zlabel('c(x, y)')
 
     # Título
-    ax.set_title(f'Gráfico de c(x, y) = {expression_str}')
+    ax.set_title(f'Gráfico de c(x, y) = {expression_str} con w={w}')
 
     # Mostrar la gráfica
     plt.show()
@@ -52,18 +52,17 @@ def plot_vector(vector):
 
     # Graficar los valores del vector en el eje y y sus índices en el eje x
     plt.figure(figsize=(10, 6))
-    plt.plot(x, vector, marker='o', linestyle='-', color='b', label='Generación')
+    plt.plot(x, vector, marker='o', linestyle='-', color='b', label='Iteración')
 
     # Etiquetas y título
-    plt.xlabel('Generación')
+    plt.xlabel('Iteración')
     plt.ylabel('Mejor valor de Fitness')
-    plt.title('Gráfica de Fitness')
+    plt.title(f'Gráfica de Fitness con w={w}')
     plt.legend()
     plt.grid(True)
 
     # Mostrar la gráfica
     plt.show()
-
 
 # Parámetros del algoritmo
 num_particulas = 20  # numero de particulas
@@ -85,66 +84,91 @@ a = int(a_)
 b_ = input("Ingrese el valor de b en el rango [-50,50]: ")
 b = int(b_)
 
-# inicializacion
-particulas = np.random.uniform(limite_inf, limite_sup, (num_particulas, dim))  # posiciones iniciales de las particulas
+# Definimos una función para realizar el análisis
+def PSO_manual(w):
+    # inicializacion
+    particulas = np.random.uniform(limite_inf, limite_sup, (num_particulas, dim))  # posiciones iniciales de las particulas
 
-velocidades = np.zeros((num_particulas, dim))  # inicializacion de la matriz de velocidades en cero
+    velocidades = np.zeros((num_particulas, dim))  # inicializacion de la matriz de velocidades en cero
 
-# inicializacion de pbest y gbest
-pbest = particulas.copy()  # mejores posiciones personales iniciales
+    # inicializacion de pbest y gbest
+    pbest = particulas.copy()  # mejores posiciones personales iniciales
 
-fitness_pbest = np.empty(num_particulas)  # mejores fitness personales iniciales
-for i in range(num_particulas):
-    fitness_pbest[i] = funcion_objetivo(particulas[i][0], particulas[i][1], a, b)
+    fitness_pbest = np.empty(num_particulas)  # mejores fitness personales iniciales
+    for i in range(num_particulas):
+        fitness_pbest[i] = funcion_objetivo(particulas[i][0], particulas[i][1], a, b)
 
-gbest = pbest[np.argmin(fitness_pbest)]  # mejor posicion global inicial
-fitness_gbest = np.min(fitness_pbest)  # fitness global inicial
+    gbest = pbest[np.argmin(fitness_pbest)]  # mejor posicion global inicial
+    fitness_gbest = np.min(fitness_pbest)  # fitness global inicial
 
-# busqueda
-for iteracion in range(cantidad_iteraciones):
-    for i in range(num_particulas):  # iteracion sobre cada partícula
-        r1, r2 = np.random.rand(), np.random.rand()  # generacion dos numeros aleatorios
+    # Inicializamos los mejores valores
+    gbests = []
 
-        # actualizacion de la velocidad de la particula en cada dimension
-        for d in range(dim):
-            velocidades[i][d] = (w * velocidades[i][d] + c1 * r1 * (pbest[i][d] - particulas[i][d]) + c2 * r2 * (gbest[d] - particulas[i][d]))
+    # busqueda
+    for iteracion in range(cantidad_iteraciones):
+        for i in range(num_particulas):  # iteracion sobre cada partícula
+            r1, r2 = np.random.rand(), np.random.rand()  # generacion dos numeros aleatorios
 
-        for d in range(dim):
-            particulas[i][d] = particulas[i][d] + velocidades[i][d]  # Actualizacion de la posicion de la particula en cada dimension
+            # actualizacion de la velocidad de la particula en cada dimension
+            for d in range(dim):
+                velocidades[i][d] = (w * velocidades[i][d] + c1 * r1 * (pbest[i][d] - particulas[i][d]) + c2 * r2 * (gbest[d] - particulas[i][d]))
 
-            # mantenimiento de las partículas dentro de los limites
-            particulas[i][d] = np.clip(particulas[i][d], limite_inf, limite_sup)
+            for d in range(dim):
+                particulas[i][d] = particulas[i][d] + velocidades[i][d]  # Actualizacion de la posicion de la particula en cada dimension
 
-        fitness = funcion_objetivo(particulas[i][0], particulas[i][1], a, b)  # Evaluacion de la funcion objetivo para la nueva posicion
+                # mantenimiento de las partículas dentro de los limites
+                particulas[i][d] = np.clip(particulas[i][d], limite_inf, limite_sup)
 
-        # actualizacion el mejor personal
-        if fitness < fitness_pbest[i]:
-            fitness_pbest[i] = fitness  # actualizacion del mejor fitness personal
-            pbest[i] = particulas[i].copy()  # actualizacion de la mejor posicion personal
+            fitness = funcion_objetivo(particulas[i][0], particulas[i][1], a, b)  # Evaluacion de la funcion objetivo para la nueva posicion
 
-            # actualizacion del mejor global
-            if fitness < fitness_gbest:
-                fitness_gbest = fitness  # actualizacion del mejor fitness global
-                gbest = particulas[i].copy()  # actualizacion de la mejor posicion global
+            # actualizacion el mejor personal
+            if fitness < fitness_pbest[i]:
+                fitness_pbest[i] = fitness  # actualizacion del mejor fitness personal
+                pbest[i] = particulas[i].copy()  # actualizacion de la mejor posicion personal
 
-    # imprimir el mejor global en cada iteracion
-    print(f"Iteración {iteracion + 1}: Mejor posición global {gbest}, Valor {fitness_gbest}")
+                # actualizacion del mejor global
+                if fitness < fitness_gbest:
+                    fitness_gbest = fitness  # actualizacion del mejor fitness global
+                    gbest = particulas[i].copy()  # actualizacion de la mejor posicion global
 
-# resultado
-solucion_optima = gbest  # mejor posicion global final
-valor_optimo = fitness_gbest  # mejor fitness global final
+        # imprimir el mejor global en cada iteracion
+        #print(f"Iteración {iteracion + 1}: Mejor posición global {gbest}, Valor {fitness_gbest}")
 
-#print("\nSolucion optima (x, y):", solucion_optima)
-#print("Valor optimo:", valor_optimo)
+        gbests.append(fitness_gbest)
 
-print(f'Mejor individuo: {solucion_optima}')
-print(f'Valor de x: {solucion_optima[0]}')
-print(f'Valor de y: {solucion_optima[1]}')
-print(f'Mejor fitness: {valor_optimo}')
+    # Resultado
+    solucion_optima = gbest  # mejor posicion global final
+    valor_optimo = fitness_gbest  # mejor fitness global final
+
+    return solucion_optima, valor_optimo, gbests
 
 # Expresión despejada
-#expression = "x**2+y**2-2*a*x+2*x*y+4*b*y+a**2+b**2-2*a*b"
 expression = f"(x-{a})**2 + (y+{b})**2"
 
+# Solución apartado A
+solucion_optima, valor_optimo, gbests = PSO_manual(w)
+
+# Gráfica de apartado C
 plot_function(expression, limite_inf, limite_sup, limite_inf, limite_sup, x_point=solucion_optima[0], y_point=solucion_optima[1])
-#plot_vector(valor_optimo)
+
+# Gráfica de apartado D
+plot_vector(gbests)
+
+# Solución de apartado E
+# Imprimimos los resultados
+print(f'Mejor individuo: {solucion_optima} con w={w}')
+print(f'Valor de x: {solucion_optima[0]} con w={w}')
+print(f'Valor de y: {solucion_optima[1]} con w={w}')
+print(f'Mejor fitness: {valor_optimo} con w={w}')
+
+# Apartado F
+# Se define un nuevo coeficiente de inercia
+w = 0.0
+solucion_optima, valor_optimo, gbests = PSO_manual(w)
+plot_function(expression, limite_inf, limite_sup, limite_inf, limite_sup, x_point=solucion_optima[0], y_point=solucion_optima[1])
+plot_vector(gbests)
+# Imprimimos los resultados
+print(f'Mejor individuo: {solucion_optima} con w={w}')
+print(f'Valor de x: {solucion_optima[0]} con w={w}')
+print(f'Valor de y: {solucion_optima[1]} con w={w}')
+print(f'Mejor fitness: {valor_optimo} con w={w}')
