@@ -110,7 +110,7 @@ for iteracion in range(cantidad_iteraciones):
             velocidades[i][d] = (w * velocidades[i][d] + c1 * r1 * (pbest[i][d] - particulas[i][d]) + c2 * r2 * (gbest[d] - particulas[i][d]))
 
         for d in range(dim):
-            particulas[i][d] = particulas[i][d] + velocidades[i][d]  # cctualizacion de la posicion de la particula en cada dimension
+            particulas[i][d] = particulas[i][d] + velocidades[i][d]  # Actualizacion de la posicion de la particula en cada dimension
 
             # mantenimiento de las partículas dentro de los limites
             particulas[i][d] = np.clip(particulas[i][d], limite_inf, limite_sup)
@@ -144,7 +144,7 @@ print(f'Mejor fitness: {valor_optimo}')
 
 # Expresión despejada
 #expression = "x**2+y**2-2*a*x+2*x*y+4*b*y+a**2+b**2-2*a*b"
-expression = "(x-a)**2 + (y+b)**2"
+expression = f"(x-{a})**2 + (y+{b})**2"
 
 plot_function(expression, limite_inf, limite_sup, limite_inf, limite_sup, x_point=solucion_optima[0], y_point=solucion_optima[1])
 #plot_vector(valor_optimo)

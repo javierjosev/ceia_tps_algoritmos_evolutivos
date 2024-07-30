@@ -103,7 +103,7 @@ _, _, gbests_100 = solucion(100)
 _, _, gbests_200 = solucion(200)
 _, _, gbests_400 = solucion(400)
 
-# Rrealizamos el gráfico de gbest
+# Realizamos el gráfico de gbest
 plt.plot(gbests_4, label="4 particulas")
 plt.plot(gbests_10, label="10 particulas")
 plt.plot(gbests_100, label="100 particulas")
