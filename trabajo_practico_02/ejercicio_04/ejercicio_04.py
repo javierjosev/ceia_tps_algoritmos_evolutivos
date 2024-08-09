@@ -76,6 +76,7 @@ def plot_function(
     # Mostrar la gráfica
     plt.show()
 
+
 def plot_vector(vector):
     # Crear un rango de índices para el eje x
     x = list(range(len(vector)))
@@ -119,6 +120,7 @@ def imprimir_resultados(
     print(f"Valor de y: {solucion_optima[1]} con w={w}")
     print(f"Mejor fitness: {valor_optimo} con w={w}")
 
+
 # Definición de las funciones del sistema de ecuaciones
 def f1(x):
     x1, x2 = x
@@ -128,6 +130,7 @@ def f1(x):
 def f2(x):
     x1, x2 = x
     return x1 - x2 * 5 - 4  # Ejemplo de otra ecuación
+
 
 # Expresión despejada
 expression = "(x*3 + y*2 - 9)**2 + (x - y*5 - 4)**2"
