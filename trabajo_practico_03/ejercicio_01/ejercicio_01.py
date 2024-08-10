@@ -51,3 +51,16 @@ gbest, gbest_fit, gbest_fit_hist = restricted_pso.run(n_particles, n_dimensions,
 print(f"Mejor solucion: [{gbest[0]:.4f}, {gbest[1]:.4f}, {gbest[2]:.4f}, {gbest[3]:.4f}]")
 print(f"Valor optimo: {gbest_fit}")
 plot_vector(gbest_fit_hist, n_particles)
+
+
+# Que sucede si se reduce en 1 unidad el tiempo de acabado de la parte B.
+
+inequalities_b_reduced = ['2.5*a + 1.5*b + 2.75*c + 2*d  <= 640', '3.5*a + 2*b + 3*c + 2*d <= 960']
+gbest, gbest_fit, gbest_fit_hist = restricted_pso.run(n_particles, n_dimensions, max_iterations, f, w, c1, c2,
+                                                      inequalities_b_reduced, variables)
+# Se imprime la mejor solucion encontrada y también su valor optimo
+print("Reducción en 1 unidad el tiempo de acabado de B")
+print(f"Mejor solucion: [{gbest[0]:.4f}, {gbest[1]:.4f}, {gbest[2]:.4f}, "
+      f"{gbest[3]:.4f}]")
+print(f"Valor optimo: {gbest_fit}")
+plot_vector(gbest_fit_hist, n_particles)
