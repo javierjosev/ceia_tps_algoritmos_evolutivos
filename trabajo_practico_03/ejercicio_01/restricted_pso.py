@@ -1,5 +1,4 @@
 import numpy as np
-from sympy import symbols, Eq, simplify
 
 
 class RestrictedPSO:
@@ -57,27 +56,15 @@ class RestrictedPSO:
         return gbest, gbest_fit, gbest_fit_hist
 
     def _check_restrictions(self, inequalities, point, variables):
-        # Creación de las variables simbólicas a partir de la lista variables
-        sym_vars = symbols(variables)
+        variable_dict = dict(zip(variables, point))
 
-        point_dict = dict(zip(variables, point))
-
-        # Evaluación de cada inecuación
         for inequality in inequalities:
-            # Conversión de la inecuación en una expresión simbólica
             try:
-                expr = eval(inequality, {var: sym_vars[i] for i, var in enumerate(variables)},
-                            {'Eq': Eq, 'simplify': simplify})
+                # Evaluación de la inecuación
+                if not eval(inequality, {}, variable_dict):
+                    return False
             except Exception as e:
-                print(f"Error al evaluar la inecuación '{inequality}': {e}")
-                return False
-
-            # Evaluación de la expresión con los valores del punto
-            try:
-                result = expr.subs(point_dict)
-                return result
-            except Exception as e:
-                print(f"Error al evaluar la inecuación '{inequality}' con el punto {point}: {e}")
-                break
+                raise ValueError(f"Error al evaluar la inecuación '{inequality}': {e}")
 
         return True
+
