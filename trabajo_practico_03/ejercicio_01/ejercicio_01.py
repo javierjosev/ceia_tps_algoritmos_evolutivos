@@ -7,6 +7,10 @@ Restricciones
 -------------
 g1) 2.5*a + 1.5*b + 2.75*c + 2*d  < 640
 g2) 3.5*a + 3*b + 3*c + 2*d < 960
+g3) a >= 0
+g4) b >= 0
+g5) c >= 0
+g6) d >= 0
 
 """
 
@@ -32,8 +36,8 @@ def plot_vector(vector, num_part):
 
 def experiment(num_particles):
     gbest_e, gbest_fit_e, _ = restricted_pso.run(n_particles=num_particles, n_dimensions=n_dimensions,
-                                                              max_iterations=max_iterations, f=f, w=w, c1=c1, c2=c2,
-                                                              inequalities=inequalities, variables=variables)
+                                                 max_iterations=max_iterations, f=f, w=w, c1=c1, c2=c2,
+                                                 inequalities=inequalities, variables=variables)
     print(f"Cantidad de partículas: {num_particles}")
     print(f"Valor optimo: {gbest_fit_e}")
     print(f"Mejor solucion: [{gbest_e[0]:.4f}, {gbest_e[1]:.4f}, {gbest_e[2]:.4f}, {gbest_e[3]:.4f}]")
@@ -61,9 +65,9 @@ print(f"Mejor solucion: [{gbest[0]:.4f}, {gbest[1]:.4f}, {gbest[2]:.4f}, {gbest[
 print(f"Valor optimo: {gbest_fit}")
 plot_vector(gbest_fit_hist, n_particles)
 
-
 # Que sucede si se reduce en 1 unidad el tiempo de acabado de la parte B.
-inequalities_b_reduced = ['2.5*a + 1.5*b + 2.75*c + 2*d  <= 640', '3.5*a + 2*b + 3*c + 2*d <= 960']
+inequalities_b_reduced = ['a >= 0', 'b >= 0', 'c >= 0', 'd >= 0',
+                          '2.5*a + 1.5*b + 2.75*c + 2*d  <= 640', '3.5*a + 2*b + 3*c + 2*d <= 960']
 gbest, gbest_fit, gbest_fit_hist = restricted_pso.run(n_particles, n_dimensions, max_iterations, f, w, c1, c2,
                                                       inequalities_b_reduced, variables)
 # Se imprime la mejor solucion encontrada y también su valor optimo
@@ -73,14 +77,15 @@ print(f"Mejor solucion: [{gbest[0]:.4f}, {gbest[1]:.4f}, {gbest[2]:.4f}, "
 print(f"Valor optimo: {gbest_fit}")
 plot_vector(gbest_fit_hist, n_particles)
 
-
 # Test para identificar la mínima cantidad de partículas
 experiment(num_particles=1)
 experiment(num_particles=2)
 experiment(num_particles=3)
 experiment(num_particles=4)
 experiment(num_particles=5)
+experiment(num_particles=6)
+experiment(num_particles=7)
+experiment(num_particles=8)
+experiment(num_particles=9)
 experiment(num_particles=10)
 experiment(num_particles=15)
-experiment(num_particles=20)
-
